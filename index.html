@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shorty - URL Shortener</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        h2 { color: #333; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 6px;
+            display: none;
+            word-break: break-all;
+        }
+        a { color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🔗 URL Shortener</h2>
+    <p>Apna lamba link yahan paste karein:</p>
+    <input type="url" id="longUrl" placeholder="https://example.com/very-long-link" required>
+    <button onclick="shortenUrl()">Link Chota Karein</button>
+
+    <div id="result">
+        <p>Aapka Chota Link:</p>
+        <a id="shortLink" href="#" target="_blank"></a>
+    </div>
+</div>
+
+<script>
+    function shortenUrl() {
+        const longUrl = document.getElementById('longUrl').value;
+        const resultDiv = document.getElementById('result');
+        const shortLinkAnchor = document.getElementById('shortLink');
+
+        if (!longUrl) {
+            alert("Please ek valid link dalein!");
+            return;
+        }
+
+        // Logic: Real app mein backend chahiye hota hai, 
+        // par demonstration ke liye hum TinyURL ki API use kar rahe hain.
+        const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`;
+
+        fetch(apiUrl)
+            .then(response => response.text())
+            .then(data => {
+                shortLinkAnchor.href = data;
+                shortLinkAnchor.innerText = data;
+                resultDiv.style.display = 'block';
+            })
+            .catch(err => {
+                alert("Oops! Kuch galti ho gayi.");
+                console.error(err);
+            });
+    }
+</script>
+
+</body>
+</html>
